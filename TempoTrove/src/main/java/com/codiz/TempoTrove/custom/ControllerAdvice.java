@@ -11,4 +11,10 @@ public class ControllerAdvice {
     {
         return new EntityAlreadyExistException(e.getMessage());
     }
+    @ExceptionHandler
+    public IncorrectFormatExceptions handeIncorrectFormatExceptions
+            (IncorrectFormatExceptions e)
+    {
+        return new IncorrectFormatExceptions(e.getMessage());
+    }
 }

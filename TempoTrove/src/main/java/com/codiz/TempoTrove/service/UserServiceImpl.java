@@ -1,6 +1,7 @@
 package com.codiz.TempoTrove.service;
 
 import com.codiz.TempoTrove.custom.EntityAlreadyExistException;
+import com.codiz.TempoTrove.custom.IncorrectFormatExceptions;
 import com.codiz.TempoTrove.dto.UserDto;
 import com.codiz.TempoTrove.model.UserModel;
 import com.codiz.TempoTrove.repository.UserResourceRepository;
@@ -36,13 +37,19 @@ public class UserServiceImpl implements UserService{
             log.info("inserting details to the db");
             UserModel user = new UserModel();
             user.setUsername(userDto.getUsername());
-            if (EmailValidator.getInstance().isValid(userDto.getEmail()))
+            if (!EmailValidator.getInstance().isValid(userDto.getEmail()))
             {
+                log.error("incorrect email format");
+                throw new IncorrectFormatExceptions("incorrect format");
+            }else {
                 user.setEmail(userDto.getEmail());
             }
             boolean isValid = PhoneNumberValidator(userDto.getPhone());
-            if(isValid)
+            if(!isValid)
             {
+                log.error("incorrect phone number format");
+                throw new IncorrectFormatExceptions("incorrect format");
+            }else {
                 user.setPhone(userDto.getPhone());
             }
             user.setPassword(userDto.getPassword());
