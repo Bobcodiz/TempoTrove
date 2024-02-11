@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +53,13 @@ public class UserServiceImpl implements UserService{
             }else {
                 user.setPhone(userDto.getPhone());
             }
-            user.setPassword(userDto.getPassword());
+            if (Objects.equals(userDto.getPassword(), userDto.getConfirmPassword())){
+                user.setPassword(userDto.getPassword());
+            }else {
+                log.error("password do not match");
+                throw new IncorrectFormatExceptions("credentials do not match");
+            }
+
 
             userResourceRepository.save(user);
 
