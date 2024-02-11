@@ -95,6 +95,11 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public String findUser(String username) {
+        log.info("finding user");
+        return null;
+    }
 
 
     private boolean PhoneNumberValidator(String phone){

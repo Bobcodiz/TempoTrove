@@ -28,4 +28,10 @@ public class UserResource {
         return new ResponseEntity<>(userService.deleteUser(username));
     }
 
+    @RequestMapping(value = "/api/v1/findUser",method = RequestMethod.GET)
+    private ResponseEntity<String> findUser(@RequestParam String username){
+        log.info("finding one user");
+        return new ResponseEntity<>(userService.findUser(username),HttpStatus.OK);
+    }
+
 }
