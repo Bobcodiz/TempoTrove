@@ -1,6 +1,7 @@
 package com.codiz.TempoTrove.controller;
 
 import com.codiz.TempoTrove.dto.UserDto;
+import com.codiz.TempoTrove.model.UserModel;
 import com.codiz.TempoTrove.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,10 @@ public class UserResource {
     }
 
     @RequestMapping(value = "/api/v1/findUser",method = RequestMethod.GET)
-    private ResponseEntity<String> findUser(@RequestParam String username){
+    private UserModel findUser(@RequestParam String username){
         log.info("finding one user");
-        return new ResponseEntity<>(userService.findUser(username),HttpStatus.OK);
+        userService.findUser(username);
+        return new UserModel();
     }
 
 }

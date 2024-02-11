@@ -96,26 +96,28 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public HttpStatus findUser(String username) {
+    public UserModel findUser(String username) {
         log.info("finding user");
         try {
             Optional<UserModel> user = userResourceRepository.findByUsername(username);
-            if (user.isPresent()){
+            if (user.isPresent()) {
                 UserModel userModel = user.get();
                 userResourceRepository.findByUsername(String.valueOf(userModel));
-                log.info("user {} found successfully",username);
-                return HttpStatus.OK;
-            }else {
-                log.error(" user {} could not be found",username);
-                return HttpStatus.NOT_FOUND;
+                log.info("user {} found successfully", username);
+                return userModel;
+            } else {
+                log.error(" user {} could not be found", username);
+
             }
-        }catch (Exception e){
-            log.error("an error occurred when finding user {} ",username);
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+        } catch (Exception e) {
+            log.error("an error occurred when finding user {} ", username);
+
         }
-
-
+        return null;
     }
+
+
+
 
 
     private boolean PhoneNumberValidator(String phone){
