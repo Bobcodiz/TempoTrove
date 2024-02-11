@@ -4,11 +4,9 @@ import com.codiz.TempoTrove.dto.UserDto;
 import com.codiz.TempoTrove.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +18,14 @@ public class UserResource {
     private ResponseEntity<String> createUser( @RequestBody UserDto userDto)
     {
         log.info("creating new user");
-        return ResponseEntity.ok(userService.createUser(userDto));
+        return new ResponseEntity<>(userService.createUser(userDto), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/api/v1/delete",method = RequestMethod.DELETE)
+    private ResponseEntity<String> deleteUser(@RequestParam String username)
+    {
+        log.info("request to delete user");
+        return new ResponseEntity<>(userService.deleteUser(username));
     }
 
 }
