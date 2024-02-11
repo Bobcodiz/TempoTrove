@@ -8,6 +8,8 @@ import com.codiz.TempoTrove.repository.UserResourceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -70,6 +72,29 @@ public class UserServiceImpl implements UserService{
 
         return null;
     }
+
+    @Override
+    public HttpStatusCode deleteUser(String username) {
+        log.info("Service method to delete user");
+
+        boolean exist = userResourceRepository.existsByUsername(username);
+
+        try {
+            if (exist) {
+                userResourceRepository.deleteAllByUsername(username);
+                log.info("Deletion successful for user: {}", username);
+                return HttpStatus.OK;
+            } else {
+                log.error("User with username {} does not exist", username);
+                return HttpStatus.NOT_FOUND;
+            }
+        } catch (Exception e) {
+            log.error("Error occurred while deleting user: {}", e.getMessage());
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
+
     private boolean PhoneNumberValidator(String phone){
         Pattern pattern = Pattern.compile("^\\d{10}$");
         Matcher matcher = pattern.matcher(phone);
