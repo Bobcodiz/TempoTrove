@@ -1,6 +1,7 @@
 package com.codiz.TempoTrove.service;
 
 import com.codiz.TempoTrove.dto.UserDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
 public interface UserService {
@@ -8,5 +9,5 @@ public interface UserService {
 
     HttpStatusCode deleteUser(String username);
 
-    String findUser(String username);
+    HttpStatus findUser(String username);
 }

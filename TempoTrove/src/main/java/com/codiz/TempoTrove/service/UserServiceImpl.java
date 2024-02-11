@@ -96,9 +96,25 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String findUser(String username) {
+    public HttpStatus findUser(String username) {
         log.info("finding user");
-        return null;
+        try {
+            Optional<UserModel> user = userResourceRepository.findByUsername(username);
+            if (user.isPresent()){
+                UserModel userModel = user.get();
+                userResourceRepository.findByUsername(String.valueOf(userModel));
+                log.info("user {} found successfully",username);
+                return HttpStatus.OK;
+            }else {
+                log.error(" user {} could not be found",username);
+                return HttpStatus.NOT_FOUND;
+            }
+        }catch (Exception e){
+            log.error("an error occurred when finding user {} ",username);
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+
     }
 
 
