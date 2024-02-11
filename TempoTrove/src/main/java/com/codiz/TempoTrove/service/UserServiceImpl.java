@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,11 +78,11 @@ public class UserServiceImpl implements UserService{
     public HttpStatusCode deleteUser(String username) {
         log.info("Service method to delete user");
 
-        boolean exist = userResourceRepository.existsByUsername(username);
-
         try {
-            if (exist) {
-                userResourceRepository.deleteAllByUsername(username);
+            Optional<UserModel> userOptional = userResourceRepository.findByUsername(username);
+            if (userOptional.isPresent()) {
+                UserModel user = userOptional.get();
+                userResourceRepository.delete(user);
                 log.info("Deletion successful for user: {}", username);
                 return HttpStatus.OK;
             } else {
@@ -93,6 +94,7 @@ public class UserServiceImpl implements UserService{
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
     }
+
 
 
     private boolean PhoneNumberValidator(String phone){
